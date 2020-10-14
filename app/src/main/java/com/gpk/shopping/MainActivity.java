@@ -3,6 +3,7 @@ package com.gpk.shopping;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.ShareActionProvider;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements ShopSelectionList
        private Toolbar toolbar;
        private ShopAdapter shopAdapter;
       private List<String> shopsList;
+
+      private ShareActionProvider mShareActionProvider;
 
        private RecyclerView.LayoutManager layoutManager;
     @Override
@@ -90,6 +94,9 @@ public class MainActivity extends AppCompatActivity implements ShopSelectionList
         SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setMaxWidth(Integer.MAX_VALUE);
 
+
+
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -109,7 +116,22 @@ public class MainActivity extends AppCompatActivity implements ShopSelectionList
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.action_share:
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("text/plain");
+                String message = "Hello";
+                i.putExtra(Intent.EXTRA_TEXT,message);
+                startActivity(Intent.createChooser(i,"Share Via"));
+                break;
 
 
+        }
 
+        Toast.makeText(getApplicationContext(),"You Selected Share Option",Toast.LENGTH_SHORT).show();
+        return super.onOptionsItemSelected(item);
+    }
 }
